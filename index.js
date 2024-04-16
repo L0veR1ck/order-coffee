@@ -78,4 +78,19 @@ function removeModalWindow() {
 document.getElementById("modalWindowCloseButton" + "").addEventListener("click", () => removeModalWindow());
 document.getElementsByClassName("overlay")[0].style.setProperty("display", "none");
 document.getElementsByClassName("submit-button")[0].addEventListener("click", () => callModalWindow());
-document.getElementsByClassName("orderButton")[0].addEventListener("click", () => removeModalWindow());
+document.getElementsByClassName("orderButton")[0].addEventListener("click", () => {
+    let time = document.getElementById('time').value.split(':');
+    let h = time[0];
+    let m = time[1];
+    let nH = new Date().getHours();
+    let nM = new Date().getMinutes();
+
+    if (h > nH || m > nM) {
+        if (h > nH)
+            removeModalWindow();
+        else if (h === nH && m >= nM)
+            removeModalWindow();
+    } else {
+        document.querySelector('input[type="time"]').style.background = 'red';
+    }
+});
