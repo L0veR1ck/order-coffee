@@ -1,0 +1,73 @@
+let nFields = 1;
+let fieldsets = [document.getElementsByTagName("fieldset")[0]];
+
+const toRussian = {
+    "usual": "обычное",
+    "no-fat": "обезжиренное",
+    "soy": "соевое",
+    "coconut": "кокосовое"
+};
+
+function callModalWindow() {
+    const modalWindowText = document.getElementById("modalWindowText");
+    modalWindowText.innerText = `Вы заказали ${nFields} ${getRightForm(nFields)}`;
+
+    const overlay = document.getElementsByClassName("overlay")[0];
+    overlay.style.display = "flex";
+
+    const tbody = overlay.getElementsByTagName("tbody")[0];
+    tbody.innerHTML = "";
+
+
+    for (let fieldset of fieldsets) {
+        let tr = document.createElement("tr");
+        let td1 = document.createElement("td");
+        td1.innerText = fieldset.getElementsByTagName("select")[0].selectedOptions[0].textContent;
+
+        let td2 = document.createElement("td");
+        fieldset.querySelectorAll('input[type="radio"]').forEach((x) => {
+            if (x.checked) {
+                td2.innerText = toRussian[x.value];
+            }
+        });
+
+        let td3 = document.createElement("td");
+        fieldset.querySelectorAll('input[type="checkbox"]').forEach((x) => {
+            if (x.checked) {
+                if (td3.innerText.length !== 0) {
+                    td3.innerText += ", ";
+                }
+                td3.innerText += x.parentElement.querySelector('span').textContent;
+            }
+        });
+
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        tr.appendChild(td3);
+
+        tbody.appendChild(tr);
+    }
+}
+
+function getRightForm(amount) {
+    const mod = amount % 100;
+
+    if (mod % 10 >= 5 || mod % 10 === 0 || Math.trunc(mod / 10) === 1) {
+        return "напитков";
+    }
+    if (mod % 10 > 1 && mod % 10 <= 4) {
+        return "напитка";
+    }
+    return "напиток";
+}
+
+
+function removeModalWindow() {
+    document.getElementsByClassName("overlay")[0].style.setProperty("display", "none");
+    document.querySelector('input[type="time"]').style.background = '';
+}
+
+document.getElementById("modalWindowCloseButton" + "").addEventListener("click", () => removeModalWindow());
+document.getElementsByClassName("overlay")[0].style.setProperty("display", "none");
+document.getElementsByClassName("submit-button")[0].addEventListener("click", () => callModalWindow());
+document.getElementsByClassName("orderButton")[0].addEventListener("click", () => removeModalWindow());
