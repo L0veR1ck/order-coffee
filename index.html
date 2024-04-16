@@ -55,6 +55,12 @@
                 <span>корицу</span>
             </label>
         </div>
+        <div class="field">
+            <label class="textarea">И еще вот что
+                <textarea name="text" onchange="cloneText(this, this.parentElement)"></textarea>
+                <span class="comment"></span>
+            </label>
+        </div>
     </fieldset>
     <div>
         <button type="button" class="add-button">+ Добавить напиток</button>
@@ -73,6 +79,7 @@
                 <th>Напиток</th>
                 <th>Молоко</th>
                 <th>Дополнительно</th>
+                <th>Пожелания</th>
             </tr>
             </thead>
             <tbody>

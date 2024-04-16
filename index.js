@@ -8,6 +8,11 @@ const toRussian = {
     "coconut": "кокосовое"
 };
 
+function cloneText(textarea, parent) {
+    parent.getElementsByClassName("comment")[0].innerHTML = textarea.value
+        .replace(/(срочно)|(быстрее)|(побыстрее)|(скорее)|(поскорее)|(очень нужно)/gi, "<b>$&</b>");
+}
+
 function callModalWindow() {
     const modalWindowText = document.getElementById("modalWindowText");
     modalWindowText.innerText = `Вы заказали ${nFields} ${getRightForm(nFields)}`;
@@ -41,10 +46,13 @@ function callModalWindow() {
             }
         });
 
+        let td4 = document.createElement("td");
+        td4.innerText = fieldset.getElementsByClassName("comment")[0].textContent;
+
         tr.appendChild(td1);
         tr.appendChild(td2);
         tr.appendChild(td3);
-
+        tr.appendChild(td4);
         tbody.appendChild(tr);
     }
 }
