@@ -1,5 +1,36 @@
-let nFields = 1;
-let fieldsets = [document.getElementsByTagName("fieldset")[0]];
+let beverageCount = 1;
+
+const addButton = document.querySelector('.add-button');
+const formContainer = document.querySelector('form');
+const originalFieldset = document.querySelector('.beverage').cloneNode(true);
+
+const firstFieldSet = document.querySelector('.beverage');
+const deleteButton = document.createElement('button');
+deleteButton.textContent = '❌';
+deleteButton.classList.add('delete-button');
+deleteButton.addEventListener('click', () => {
+    firstFieldSet.remove();
+    beverageCount--;
+});
+firstFieldSet.appendChild(deleteButton);
+
+addButton.addEventListener('click', () => {
+    beverageCount++;
+    const newFieldset = originalFieldset.cloneNode(true);
+    const heading = newFieldset.querySelector('.beverage-count');
+    heading.textContent = `Напиток №${beverageCount}`;
+
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = '❌';
+    deleteButton.classList.add('delete-button');
+    deleteButton.addEventListener('click', () => {
+        newFieldset.remove();
+        beverageCount--;
+    });
+    newFieldset.appendChild(deleteButton);
+
+    formContainer.insertBefore(newFieldset, addButton.parentNode);
+});
 
 const toRussian = {
     "usual": "обычное",
@@ -15,7 +46,7 @@ function cloneText(textarea, parent) {
 
 function callModalWindow() {
     const modalWindowText = document.getElementById("modalWindowText");
-    modalWindowText.innerText = `Вы заказали ${nFields} ${getRightForm(nFields)}`;
+    modalWindowText.innerText = `Вы заказали ${beverageCount} ${getRightForm(beverageCount)}`;
 
     const overlay = document.getElementsByClassName("overlay")[0];
     overlay.style.display = "flex";
@@ -24,7 +55,7 @@ function callModalWindow() {
     tbody.innerHTML = "";
 
 
-    for (let fieldset of fieldsets) {
+    for (let fieldset of document.getElementsByTagName("fieldset")) {
         let tr = document.createElement("tr");
         let td1 = document.createElement("td");
         td1.innerText = fieldset.getElementsByTagName("select")[0].selectedOptions[0].textContent;
@@ -92,5 +123,6 @@ document.getElementsByClassName("orderButton")[0].addEventListener("click", () =
             removeModalWindow();
     } else {
         document.querySelector('input[type="time"]').style.background = 'red';
+        alert('Мы не умеем перемещаться во времени. Выберите время позже, чем текущее');
     }
 });
